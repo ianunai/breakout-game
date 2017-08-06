@@ -32,6 +32,9 @@ var brickPadding = 10;
 var brickOffsetTop = 30;
 var brickOffsetLeft = 30;
 
+// score of the player
+var score = 0;
+
 // creating a brick field
 var bricks = [];
 for(c=0; c<brickColumnCount; c++) {
@@ -78,12 +81,20 @@ function drawBricks() {
     }
 }
 
+// method for drawing the score on the canvas
+function drawScore() {
+    ctx.font = "16px Arial";
+    ctx.fillStyle = "#0095DD";
+    ctx.fillText("Score: "+score, 8, 20);
+}
+
 // method for drawing on the canvas
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     drawBall();
     drawPaddle();
     drawBricks();
+    drawScore();
     collisionDetection();
     if(x + dx > canvas.width-ballRadius || x + dx < ballRadius) {
         dx = -dx;
@@ -96,8 +107,8 @@ function draw() {
     	        dy = -dy;
     	    }
     	    else {
-    	        // alert("GAME OVER");
-    	        // document.location.reload();
+    	        alert("GAME OVER");
+                document.location.reload();
     	    }
     }
 
@@ -142,7 +153,14 @@ function collisionDetection() {
             if(b.status == 1) {
                 if(x > b.x && x < b.x+brickWidth && y > b.y && y < b.y+brickHeight) {
                     dy = -dy;
-                    b.status = 0;
+                    b.status = 0;// change the status of the brick so that it is not painted
+                    score++;// update the game score when a brick is hit
+
+                    //when all bricks have been hit
+                    if(score == brickRowCount*brickColumnCount) {
+                        alert("VICTORY!");
+                        document.location.reload();
+                    }
                 }
             }
         }
