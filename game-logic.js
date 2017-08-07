@@ -35,6 +35,9 @@ var brickOffsetLeft = 30;
 // score of the player
 var score = 0;
 
+// lives of the player
+var lives = 3;
+
 // creating a brick field
 var bricks = [];
 for(c=0; c<brickColumnCount; c++) {
@@ -88,6 +91,13 @@ function drawScore() {
     ctx.fillText("Score: "+score, 8, 20);
 }
 
+// method for drawing the number of lives remaining on the canvas
+function drawLives() {
+    ctx.font = "16px Arial";
+    ctx.fillStyle = "#0095DD";
+    ctx.fillText("Lives: "+lives, canvas.width-65, 20);
+}
+
 // method for drawing on the canvas
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -95,6 +105,7 @@ function draw() {
     drawPaddle();
     drawBricks();
     drawScore();
+    drawLives();
     collisionDetection();
     if(x + dx > canvas.width-ballRadius || x + dx < ballRadius) {
         dx = -dx;
@@ -107,8 +118,17 @@ function draw() {
     	        dy = -dy;
     	    }
     	    else {
-    	        alert("GAME OVER");
-                document.location.reload();
+    	        lives--;
+                if(!lives) {// if the player runs out of lives
+                    alert("GAME OVER");
+                    document.location.reload();
+                } else {// reset the position of the ball and the paddle to the intial position
+                    x = canvas.width/2;
+                    y = canvas.height-30;
+                    dx = 2;
+                    dy = -2;
+                    paddleX = (canvas.width-paddleWidth)/2;
+                }
     	    }
     }
 
@@ -120,11 +140,16 @@ function draw() {
     }
     x += dx;
     y += dy;
+
+    requestAnimationFrame(draw);
 }
 
 // setting up event listeners for key presses
 document.addEventListener("keydown", keyDownHandler, false);
 document.addEventListener("keyup", keyUpHandler, false);
+
+// setting up event listener for mouse movement
+// document.addEventListener("mousemove", mouseMoveHandler, false);
 
 // methods handling key presses
 function keyDownHandler(e) {
@@ -144,6 +169,14 @@ function keyUpHandler(e) {
         leftPressed = false;
     }
 }
+
+// method handling mouse movement
+// function mouseMoveHandler(e) {
+//     var relativeX = e.clientX - canvas.offsetLeft;
+//     if(relativeX > 0 && relativeX < canvas.width) {
+//         paddleX = relativeX - paddleWidth/2;
+//     }
+// }
 
 //method for detecting collision
 function collisionDetection() {
@@ -167,5 +200,4 @@ function collisionDetection() {
     }
 }
 
-// repeated call of draw() method to redraw the canvas
-setInterval(draw, 10);
+draw();
