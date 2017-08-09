@@ -17,7 +17,7 @@ var dy = -2;
 var paddleHeight = 10;
 var paddleWidth = 75;
 var paddleX = (canvas.width-paddleWidth)/2;
-var paddleColor = "#0095DD";
+var paddleColor = "#4dff4d";
 
 // keeping a status of which arrow button is pressed
 var rightPressed = false;
@@ -76,7 +76,7 @@ function drawBricks() {
                 bricks[c][r].y = brickY;
                 ctx.beginPath();
                 ctx.rect(brickX, brickY, brickWidth, brickHeight);
-                ctx.fillStyle = "#0095DD";
+                ctx.fillStyle = "#ff8080";
                 ctx.fill();
                 ctx.closePath();
             }
