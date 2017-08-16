@@ -170,14 +170,6 @@ function keyUpHandler(e) {
     }
 }
 
-// method handling mouse movement
-// function mouseMoveHandler(e) {
-//     var relativeX = e.clientX - canvas.offsetLeft;
-//     if(relativeX > 0 && relativeX < canvas.width) {
-//         paddleX = relativeX - paddleWidth/2;
-//     }
-// }
-
 //method for detecting collision
 function collisionDetection() {
     for(c=0; c<brickColumnCount; c++) {
